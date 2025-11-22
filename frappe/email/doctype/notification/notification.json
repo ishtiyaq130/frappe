@@ -41,6 +41,7 @@
   "column_break_5",
   "send_to_all_assignees",
   "recipients",
+  "dynamic_recipients",
   "message_sb",
   "message_type",
   "message",
@@ -228,7 +229,7 @@
    "fieldname": "recipients",
    "fieldtype": "Table",
    "label": "Recipients",
-   "mandatory_depends_on": "eval:doc.channel!=='Slack' && !doc.send_to_all_assignees",
+   "mandatory_depends_on": "eval: doc.channel !== 'Slack' && !doc.send_to_all_assignees && doc.recipient_rules && doc.recipient_rules.length > 0",
    "options": "Notification Recipient"
   },
   {
@@ -337,13 +338,19 @@
    "fieldname": "filters_section",
    "fieldtype": "Section Break",
    "label": "Filters"
+  },
+  {
+   "fieldname": "dynamic_recipients",
+   "fieldtype": "Table",
+   "label": "Dynamic Recipients",
+   "options": "Dynamic Recipients"
   }
  ],
  "grid_page_length": 50,
  "icon": "fa fa-envelope",
  "index_web_pages_for_search": 1,
  "links": [],
- "modified": "2025-05-10 21:03:15.561558",
+ "modified": "2025-09-21 22:31:18.870058",
  "modified_by": "Administrator",
  "module": "Email",
  "name": "Notification",

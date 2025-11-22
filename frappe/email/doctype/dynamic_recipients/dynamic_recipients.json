@@ -1,0 +1,62 @@
+{
+ "actions": [],
+ "allow_rename": 1,
+ "creation": "2025-09-21 21:54:25.856662",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "target_doctype",
+  "target_field",
+  "filter_value",
+  "docfield_reference",
+  "email_field"
+ ],
+ "fields": [
+  {
+   "fieldname": "target_doctype",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Target Doctype",
+   "options": "DocType"
+  },
+  {
+   "fieldname": "filter_value",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "label": "Filter Value"
+  },
+  {
+   "fieldname": "docfield_reference",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "DocField Reference"
+  },
+  {
+   "fieldname": "email_field",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Email Field"
+  },
+  {
+   "fieldname": "target_field",
+   "fieldtype": "Select",
+   "in_list_view": 1,
+   "label": "Target Field"
+  }
+ ],
+ "grid_page_length": 50,
+ "index_web_pages_for_search": 1,
+ "istable": 1,
+ "links": [],
+ "modified": "2025-10-05 18:38:05.715569",
+ "modified_by": "Administrator",
+ "module": "Email",
+ "name": "Dynamic Recipients",
+ "owner": "Administrator",
+ "permissions": [],
+ "row_format": "Dynamic",
+ "sort_field": "creation",
+ "sort_order": "DESC",
+ "states": []
+}

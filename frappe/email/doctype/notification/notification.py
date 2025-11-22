@@ -429,7 +429,12 @@ def get_context(context):
 
 		attachments = self.get_attachment(doc)
 
-		recipients, cc, bcc = self.get_list_of_recipients(doc, context)
+		if not self.recipients:
+			recipients = self.get_list_of_dynamic_recipients(doc, context)
+			cc = []
+			bcc = []
+		else:
+			recipients, cc, bcc = self.get_list_of_recipients(doc, context)
 
 		users = recipients + cc + bcc
 
@@ -457,7 +462,14 @@ def get_context(context):
 			subject = frappe.render_template(self.subject, context)
 
 		attachments = self.get_attachment(doc)
-		recipients, cc, bcc = self.get_list_of_recipients(doc, context)
+		
+		if not self.recipients:
+			recipients = self.get_list_of_dynamic_recipients(doc, context)
+			cc = []
+			bcc = []
+		else:
+			recipients, cc, bcc = self.get_list_of_recipients(doc, context)
+
 		if not (recipients or cc or bcc):
 			return
 
@@ -586,6 +598,42 @@ def get_context(context):
 			recipients = recipients + get_assignees(doc)
 
 		return list(set(recipients)), list(set(cc)), list(set(bcc))
+
+	def get_list_of_dynamic_recipients(self, doc, context):
+		recipients = []
+
+		for recipient in self.dynamic_recipients:
+			target_doctype = recipient.target_doctype
+			target_field = recipient.target_field
+			filter_value = recipient.filter_value
+			docfield_reference = recipient.docfield_reference
+			email_field = recipient.email_field
+
+			# skip if target_doctype and email_field not selected
+			if not target_doctype or not email_field:
+				continue
+
+			# value from current document
+			if docfield_reference:
+				value  = doc.get(docfield_reference)
+			# Static filter
+			elif filter_value:
+				value = filter_value
+
+			filters = {}
+			if target_field and value:
+				filters[target_field] = value
+
+			# Fetch email addresses from target doctype
+			results = frappe.get_all(target_doctype, filters=filters, fields=[email_field])
+
+			# Get all the reciepnts email
+			for r in results:
+				email = r.get(email_field)
+				if email and validate_email_address(email):
+					recipients.append(email)
+
+		return list(set(recipients))
 
 	def get_receiver_list(self, doc, context, field_on_user="mobile_no", recipient_extractor_func=None):
 		"""return receiver list based on the doc field and role specified"""
